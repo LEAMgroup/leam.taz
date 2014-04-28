@@ -1,0 +1,17 @@
+leam.taz Installation
+---------------------
+
+To install leam.taz using zc.buildout and the plone.recipe.zope2instance
+recipe to manage your project, you can do this:
+
+* Add ``leam.taz`` to the list of eggs to install, e.g.:
+
+    [buildout]
+    ...
+    eggs =
+        ...
+        leam.taz
+       
+* Re-run buildout, e.g. with:
+
+    $ ./bin/buildout
