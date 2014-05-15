@@ -52,6 +52,14 @@ def test_suite():
 
         # -*- extra stuff goes here -*-
 
+        # Integration tests for TAZAnalysis
+        ztc.ZopeDocFileSuite(
+            'TAZAnalysis.txt',
+            package='leam.taz',
+            optionflags = OPTION_FLAGS,
+            test_class=TestCase),
+
+
         ])
 
 if __name__ == '__main__':
