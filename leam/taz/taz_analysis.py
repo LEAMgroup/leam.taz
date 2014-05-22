@@ -56,10 +56,6 @@ class ITAZAnalysis(model.Schema, IImageScaleTraversable):
         default = _(u"2020,2025,2030,2035,2040"),
         )
 
-    autorun = schema.Bool(
-        title = _(u"Run this analysis each time a LUC scenario is created?"),
-        )
-
     scenario = RelationChoice(
         title = _(u"LEAM Scenario"),
         description = _(u"Select specific scenarios for a onetime run"),
@@ -72,6 +68,13 @@ class ITAZAnalysis(model.Schema, IImageScaleTraversable):
         title = _(u"Job Status"),
         default = u"pending",
         )
+
+# Set the default value based on registry 
+# take from the following: http://stackoverflow.com/questions/6662467/how-do-you-override-the-default-value-of-a-field-in-a-dexterity-behavior-in-plon
+#
+#@default_value(field=ITAZAnalysis['years'])
+#def yearsDefaultValue(data):
+#    data.context._years
 
 
 # Custom content-type class; objects created for this content type will
