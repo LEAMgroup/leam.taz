@@ -66,7 +66,7 @@ class ITAZAnalysis(model.Schema, IImageScaleTraversable):
     #form.omitted('runstatus')
     runstatus = schema.TextLine(
         title = _(u"Job Status"),
-        default = u"pending",
+        default = u"queued",
         )
 
 # Set the default value based on registry 
