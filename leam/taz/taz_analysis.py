@@ -12,12 +12,14 @@ from z3c.form import group, field
 from zope import schema
 from zope.interface import Interface, invariant, Invalid
 from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
+from zope.lifecycleevent.interfaces import IObjectAddedEvent
 from zope.schema.interfaces import IContextSourceBinder
 
 from Acquisition import aq_inner, aq_parent
 
 from plone.dexterity.content import Item
+from plone.directives.dexterity import DisplayForm
+from plone.registry.interfaces import IRegistry
 from plone.namedfile.interfaces import IImageScaleTraversable
 from plone.supermodel import model
 from plone.autoform import directives as form
@@ -61,12 +63,13 @@ class ITAZAnalysis(model.Schema, IImageScaleTraversable):
         description = _(u"Select specific scenarios for a onetime run"),
         source = ObjPathSourceBinder(object_provides= \
                                      ILUCScenario.__identifier__),
+        required = False,
         )
 
     #form.omitted('runstatus')
     runstatus = schema.TextLine(
         title = _(u"Job Status"),
-        default = u"queued",
+        default = u"pending",
         )
 
 # Set the default value based on registry 
@@ -97,28 +100,28 @@ class TAZAnalysis(Item):
             )
 
 
-# View class
-# The view will automatically use a similarly named template in
-# taz_analysis_templates.
-# Template filenames should be all lower case.
-# The view will render when you request a content object with this
-# interface with "/@@sampleview" appended.
-# You may make this the default view for content objects
-# of this type by uncommenting the grok.name line below or by
-# changing the view class name and template filename to View / view.pt.
+@grok.subscribe(ITAZAnalysis, IObjectAddedEvent)
+def scenarioSpecified(obj, event):
+    import pdb; pdb.set_trace()
 
-class SampleView(grok.View):
-    """ sample view class """
+    if obj.scenario:
+        obj.runstatus = "queued"
+
+
+class DefaultView(DisplayForm):
+    """ default view class """
 
     grok.context(ITAZAnalysis)
     grok.require('zope2.View')
 
-    # grok.name('view')
+    grok.name('view')
 
     # Add view methods here
 
 
 class ModelConfig(View):
+    """ configuration information as JSON """
+
     grok.context(ITAZAnalysis)
     grok.name('getConfig')
 
@@ -145,6 +148,8 @@ class ModelConfig(View):
         return json.dumps(d)
 
 class requeue(View):
+    """ requeue job if necessary """
+
     grok.context(ITAZAnalysis)
     grok.name('requeue')
 
