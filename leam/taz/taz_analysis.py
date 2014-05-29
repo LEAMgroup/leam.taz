@@ -102,7 +102,7 @@ class TAZAnalysis(Item):
 
 @grok.subscribe(ITAZAnalysis, IObjectAddedEvent)
 def scenarioSpecified(obj, event):
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
 
     if obj.scenario:
         obj.runstatus = "queued"
