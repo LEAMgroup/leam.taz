@@ -18,7 +18,7 @@
     <div tal:condition="python:context.runstatus=='pending'" >
       <p>The TAZ analysis is PENDING.  This is the correct status if
          the TAZ analysis is part of post-processing on future scenarios.
-         But if you intended to the analysis to be performed immediate
+         But if you intended to the analysis to be performed immediately
          you should ensure a scenario as been selected.  Use "edit" to 
          modify the TAZ analysis parameters.
       </p>
@@ -31,9 +31,11 @@
     </div>
 
     <div tal:condition="python:context.runstatus not in ('pending', 'queued')">
-      <p>The TAZ analysis should be ready.  Look for a folder titled 
+      <p>The TAZ analysis should be completed.
+        <span tal:condition="context/scenario">Look for a folder titled 
          "<span tal:replace="context/title">title</span>" in the  
          <a href="#" tal:attributes="href string:${context/scenario/to_object/absolute_url}">scenario folder</a> for the results.
+       </span>
       </p>
     </div>
 
